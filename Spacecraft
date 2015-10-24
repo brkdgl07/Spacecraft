@@ -1,0 +1,149 @@
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+
+
+
+public class Spacecraft {
+
+	private int x;
+	private int y;
+	private int score = 0;
+	private boolean visible;
+	private boolean goLeft = false;
+	private boolean goRight = false;
+	private boolean goUp = false;
+	private boolean goDown = false;
+	private boolean fire = false;
+	private ArrayList<Missiles> ms = new ArrayList<Missiles>();
+	public Spacecraft(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+		visible = true;
+	}
+	public void update(Enemies enemy, Meteor meteor)
+	{
+		if(goLeft)
+			x += -3;
+		if(goRight)
+			x += 3;
+		if(goUp)
+			y += -4;
+		if(goDown)
+			y += 4;
+		if(x < -10)
+			x = -10;
+		if(x > Game.WIDTH-150)
+			x = Game.WIDTH-150;
+		if(y > Game.HEIGHT -100)
+			y = Game.HEIGHT -100;
+		if(y < 0)
+			y = 0;
+		if(fire)
+		{
+			System.out.println(ms.size());
+			setFire(false);
+			ms.add(new Missiles(x+100, y+60));
+		}
+		
+		for(int i = 0; i < ms.size(); i++)
+		{
+			Missiles mis = (Missiles) ms.get(i);
+			try{
+			if(mis.getX() < Game.WIDTH)
+			{
+			    mis.update();
+			}else{
+				ms.remove(i);
+			}
+			if(mis.getBounds().intersects(enemy.getBounds()))
+			{
+				enemy.setVisible(false);
+				ms.remove(i);
+				score++;
+			}
+			if(getBounds().intersects(meteor.getBounds()))
+			{
+				setVisible(false);
+			}
+			if(mis.getBounds().intersects(meteor.getBounds()))
+			{
+				ms.remove(i);
+			}
+		  }catch(Exception e){}
+	
+		}
+		if(getBounds().intersects(enemy.getBounds()))
+		{
+			enemy.setVisible(false);
+			score = 0;
+		}
+		
+	}
+	public void paint(Graphics g)
+	{
+		for(Missiles ms: ms)
+		{
+			ms.paint(g);
+		}
+	}
+	public Rectangle getBounds()
+	{
+		return new Rectangle(x,y,120,70);
+	}
+	public synchronized int getX() {
+		return x;
+	}
+	public synchronized void setX(int x) {
+		this.x = x;
+	}
+	public synchronized int getY() {
+		return y;
+	}
+	public synchronized void setY(int y) {
+		this.y = y;
+	}
+	public synchronized boolean isVisible() {
+		return visible;
+	}
+	public synchronized void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+	public synchronized boolean isGoLeft() {
+		return goLeft;
+	}
+	public synchronized void setGoLeft(boolean goLeft) {
+		this.goLeft = goLeft;
+	}
+	public synchronized boolean isGoRight() {
+		return goRight;
+	}
+	public synchronized void setGoRight(boolean goRight) {
+		this.goRight = goRight;
+	}
+	public synchronized boolean isGoUp() {
+		return goUp;
+	}
+	public synchronized void setGoUp(boolean goUp) {
+		this.goUp = goUp;
+	}
+	public synchronized boolean isGoDown() {
+		return goDown;
+	}
+	public synchronized void setGoDown(boolean goDown) {
+		this.goDown = goDown;
+	}
+	public synchronized boolean isFire() {
+		return fire;
+	}
+	public synchronized void setFire(boolean fire) {
+		this.fire = fire;
+	}
+	public synchronized int getScore() {
+		return score;
+	}
+	public synchronized void setScore(int score) {
+		this.score = score;
+	}
+}
