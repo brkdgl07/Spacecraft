@@ -1,0 +1,26 @@
+import java.awt.Graphics;
+import java.awt.Image;
+
+
+public class Background {
+
+	int x1 = 0;
+	int y1 = 0;
+	int x2 = Game.WIDTH;
+	int y2 = 0;
+	
+	public void update()
+	{
+		x1 -= 1;
+		x2 -= 1;
+		if(x1 == -Game.WIDTH)
+			x1 = Game.WIDTH;
+		else if(x2 == -Game.WIDTH)
+			x2 = Game.WIDTH;
+	}
+	public void paint(Graphics g, Image img)
+	{
+		g.drawImage(img, x1, y1,Game.WIDTH, Game.HEIGHT, null);
+		g.drawImage(img, x2, y2,Game.WIDTH, Game.HEIGHT, null);
+	}
+}
