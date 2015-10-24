@@ -1,0 +1,60 @@
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.util.Random;
+
+
+public class Enemies {
+
+	private int x;
+	private int y;
+	private boolean visible;
+	private Random rd = new Random();
+	public Enemies()
+	{
+		visible = false;
+		
+	}
+	public void update()
+	{
+		if(isVisible())
+		{
+			x += -3;
+			
+		}else{
+			x = Game.WIDTH + 20;
+			y = 50 + rd.nextInt(Game.HEIGHT - 100);
+			setVisible(true);
+		}
+		if(x == -50)
+		{
+			setVisible(false);
+			Game.sc.setScore(0);
+		}
+	}
+	public void paint(Graphics g, Image img)
+	{
+		g.drawImage(img, x, y, 80, 60, null);
+	}
+	public synchronized int getX() {
+		return x;
+	}
+	public synchronized void setX(int x) {
+		this.x = x;
+	}
+	public synchronized int getY() {
+		return y;
+	}
+	public synchronized void setY(int y) {
+		this.y = y;
+	}
+	public synchronized boolean isVisible() {
+		return visible;
+	}
+	public synchronized void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, 80 ,60);
+    }
+}
